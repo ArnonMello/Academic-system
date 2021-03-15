@@ -20,6 +20,21 @@ li {
 
 .search-bar{
   position: relative;
+  width: 13%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 1px;
   width: 10%;
 }
-  
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.table{
+  position: relative;
+  top: 5px;
+}
