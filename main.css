@@ -1,0 +1,20 @@
+li {
+    list-style: circle;
+}
+  
+.list {
+    list-style: square;
+}
+  
+#msg {
+    font-family: monospace;
+}
+
+.topnav .login-container button:hover {
+  background-color: green;
+}
+
+.upload{
+  padding-top: 3%;
+}
+  
