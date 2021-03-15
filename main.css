@@ -17,4 +17,9 @@ li {
 .upload{
   padding-top: 3%;
 }
+
+.search-bar{
+  position: relative;
+  width: 10%;
+}
   

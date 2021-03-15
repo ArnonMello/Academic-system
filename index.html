@@ -7,8 +7,8 @@
     <title>Document</title>
     <div class="login-container">
         <form action="/action_page.php">
-          <input type="text" placeholder="username" id="username">
-          <input type="password" placeholder="password" id="psw">
+          <input type="text" placeholder="usuário" id="username">
+          <input type="password" placeholder="senha" id="psw">
           <button type="button" onclick="getInfo()">Login</button>
         </form>
       </div>
@@ -16,7 +16,18 @@
     <script src="app.js"></script>
 </head>
 <body>
+  <div>
     <label class="upload" for="myfile">Escolha o arquivo para upload:</label>
     <input class="upload" type="file" id="myfile" name="myfile">
+  </div>
+  <div>
+    <p>Barra de pesquisa:</p>
+    <input type="text" placeholder="Título" class="search-bar">
+    <input type="text" placeholder="Autor" class="search-bar">
+    <input type="text" placeholder="Orientador" class="search-bar">
+    <input type="text" placeholder="Instituição de ensino" class="search-bar">
+    <input type="text" placeholder="Tipo da pesquisa" class="search-bar">
+    <input type="text" placeholder="Palavras chaves" class="search-bar">
+  </div>
 </body>
 </html>
