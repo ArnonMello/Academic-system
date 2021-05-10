@@ -30,5 +30,6 @@ Deverá ser desenvolvido um trabalho para armazenamento, tratamento e pesquisa e
 - Arnon
 - Bestwina
 - Bruno Mello
+- Caio Chaves
 - Gustavo
 - Menezes
