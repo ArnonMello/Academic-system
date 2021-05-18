@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema academico</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{
+      url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <script src="{{url_for('static', filename='app.js')}}"></script>
+
+    
+    
+</head>
+<body>
+  <form action = "http://localhost:5000/uploader" method = "POST" 
+  enctype = "multipart/form-data">
+    <input type = "file" name = "file" />
+    <input type = "submit"/>
+  </form>   
+  <form action = "http://localhost:5000/search" method="POST"
+                                                enctype = "multipart/form-data">
+  <input type="text" id="myInput" name="search_bar" placeholder="Search for names..">
+    <input type = "submit"/>
+
+  </form>
+ <div id="wrapper">
+  <h1>Arquivos:</h1>
+
+  <table id="keywords" cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th><span>Título</span></th>
+        <th><span>Autor</span></th>
+        <th><span>Orientador</span></th>
+        <th><span>Instituição de ensino</span></th>
+        <th><span>Tipo da pesquisa</span></th>
+        <th><span>Palavras chaves</span></th>
+        <th><span>Resumo</span></th>
+        <th><span>Download</span></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in db %}
+    <tr>
+        <td class="lalign">{{ row['Titulo'] }}</td>
+        <td>{{ row['Autores'] }}</td>
+        <td>{{ row['Orientadores'] }}</td>
+        <td>{{ row['Instituicao'] }}</td>
+        <td>{{ row['Tipo'] }}</td>
+        <td>{{ row['PalavrasChave'] }}</td>
+        <td>{{ row['Resumo'] }}</td>
+        <td> <form action="http://localhost:5000/download" method="POST" ><button class="btn btn-danger" type="submit" name="filename" value="{{  row['filename'] }}"><span class="glyphicon glyphicon-trash"></span> Download</button> </form></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+ </div>
+</body>
+</html>
