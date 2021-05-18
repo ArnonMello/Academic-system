@@ -1,6 +1,9 @@
+import zipfile
+import requests
 import sqlalchemy
 from flask import (
     Flask,
+    send_file,
     g,
     redirect,
     render_template,
@@ -10,33 +13,10 @@ from flask import (
 )
 import pandas as pd
 from flask import send_from_directory
-import os
-import textract
+from backend import User, file_to_database, get_all_filenames
 
 app = Flask(__name__)
 app.secret_key = 'somesecretkeythatonlyishouldknow'
-
-
-class User:
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
-
-    def __repr__(self):
-        return f'<User: {self.username}>'
-
-
-class Artigo:
-    def __init__(self, titulo, autor, orientador, instituicao, tipo, palavrasChave, resumo, filename):
-        self.titulo = titulo
-        self.autor = autor
-        self.orientador = orientador
-        self.instituicao = instituicao
-        self.tipo = tipo
-        self.palavrasChave = palavrasChave
-        self.resumo = resumo
-        self.filename = filename
 
 
 users = []
@@ -59,23 +39,11 @@ def index():
 @app.route('/uploader', methods=['GET', 'POST'])
 def uploader():
     if request.method == 'POST':
-        f = request.files['file']
-        path = ''
-        path = os.path.join(path, f.filename)
-        f.save(path)
-        text = textract.process(path)
-        linhas = text.decode('utf8').splitlines()
-        textos = []
-        for linha in linhas:
-            if linha != '':
-                splitted = linha.split(':')
-                textos.append(splitted[1])
-
-        artigo = Artigo(textos[0], textos[1], textos[2], textos[3], textos[4], textos[5], textos[6], f.filename)
-        pdfToDatabase(artigo)
+        file_to_database(request.files['file'])
 
         db = getDB()
         return render_template('index.html', db=db)
+
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -92,6 +60,21 @@ def download():
         filename = request.form.get('filename')
         uploads = ''
         return send_from_directory(directory=uploads, filename=filename)
+
+@app.route('/backup', methods=["GET", "POST"])
+def backup():
+    if request.method == 'POST':
+
+        f_names = get_all_filenames()
+
+        zipf = zipfile.ZipFile("backup.zip", "w", zipfile.ZIP_DEFLATED)
+
+        for fn in f_names:
+            zipf.write(fn)
+
+        return send_file("backup.zip", mimetype="zip",
+                         attachment_filename="backup.zip",
+                         as_attachment=True)
 
 
 @app.before_request
@@ -119,24 +102,6 @@ def login():
         return redirect(url_for('login'))
 
     return render_template('login.html')
-
-
-def pdfToDatabase(artigo):
-    titulo = artigo.titulo
-    autor = artigo.autor
-    orientador = artigo.orientador
-    instituicao = artigo.instituicao
-    tipo = artigo.tipo
-    palavrasChave = artigo.palavrasChave
-    resumo = artigo.resumo
-    filename = artigo.filename
-
-    sql_query = f'''Insert Into Artigos
-                   (Titulo, Autores,Orientadores,Instituicao,Tipo,PalavrasChave,Resumo, filename)
-                   Value ('{titulo}','{autor}','{orientador}','{instituicao}','{tipo}','{palavrasChave}','{resumo}','{filename}')'''
-
-    conn = sqlalchemy.create_engine('mysql+mysqldb://bestwinaAdmin:123456789@127.0.0.1:3306/pdfLabprog')  # connect to server
-    conn.execute(sql_query)
 
 
 def getDB():
