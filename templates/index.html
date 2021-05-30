@@ -16,6 +16,9 @@
     
 </head>
 <body>
+  <form action = "http://localhost:5000/signup" method = "GET" >
+    <input placeholder="Cadastrar" type = "submit">Cadastrar</input>
+  </form>
   <form action = "http://localhost:5000/uploader" method = "POST" 
   enctype = "multipart/form-data">
     <input type = "file" name = "file" />
@@ -41,6 +44,7 @@
         <th><span>Palavras chaves</span></th>
         <th><span>Resumo</span></th>
         <th><span>Download</span></th>
+        <th><span>Alterar</span></th>
       </tr>
     </thead>
     <tbody>
@@ -54,6 +58,7 @@
         <td>{{ row['PalavrasChave'] }}</td>
         <td>{{ row['Resumo'] }}</td>
         <td> <form action="http://localhost:5000/download" method="POST" ><button class="btn btn-danger" type="submit" name="filename" value="{{  row['filename'] }}"><span class="glyphicon glyphicon-trash"></span> Download</button> </form></td>
+        <td> <form action="http://localhost:5000/alterar" method="POST" ><button class="btn btn-danger" type="submit" name="id" value="{{ row['id'] }}"><span class="glyphicon glyphicon-trash"></span> Alterar </button> </form></td>
     </tr>
     {% endfor %}
     </tbody>
@@ -61,6 +66,10 @@
  </div>
  <form action="http://localhost:5000/backup" method="POST" enctype="multipart/form-data">
  <button type="submit" >Backup</button>
+  </form>
+  <form action="http://localhost:5000/restore" method="POST" enctype="multipart/form-data">
+ <button type="submit" >Restaurar</button>
  </form>
+
 </body>
 </html>
